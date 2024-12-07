@@ -1,32 +1,14 @@
-package main
+package day06
 
 import (
-	"fmt"
-	"log"
-	"os"
+	"github.com/laurensotto/advent2024/pkg/sliceutil"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 )
 
-func main() {
-	filename := "challenge.txt"
-	if len(os.Args) > 1 {
-		filename = os.Args[1]
-	}
-
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		log.Fatalf("failed to read file: %v", err)
-	}
-
-	answer1, time1, answer2, time2 := solve(string(data))
-	fmt.Printf("Part 1: %d (Time: %d ms)\n", answer1, time1)
-	fmt.Printf("Part 2: %d (Time: %d ms)\n", answer2, time2)
-}
-
-func solve(input string) (int, int64, int, int64) {
+func Solve(input string) (string, int64, string, int64) {
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
 	grid := make([][]string, len(lines))
@@ -37,33 +19,17 @@ func solve(input string) (int, int64, int, int64) {
 		grid[i] = gridRow
 	}
 
-	answer1Chan := make(chan int)
-	answer2Chan := make(chan int)
-	time1Chan := make(chan int64)
-	time2Chan := make(chan int64)
+	copiedGrid := sliceutil.DeepCopyGrid(grid)
 
-	go func() {
-		start := time.Now()
-		result := part1(deepCopyGrid(grid))
-		duration := time.Since(start).Milliseconds()
-		answer1Chan <- result
-		time1Chan <- duration
-	}()
+	startTime1 := time.Now()
+	part1Result := part1(grid)
+	time1Result := time.Since(startTime1).Milliseconds()
 
-	go func() {
-		start := time.Now()
-		result := part2(deepCopyGrid(grid))
-		duration := time.Since(start).Milliseconds()
-		answer2Chan <- result
-		time2Chan <- duration
-	}()
+	startTime2 := time.Now()
+	part2Result := part2(copiedGrid)
+	time2Result := time.Since(startTime2).Milliseconds()
 
-	part1Result := <-answer1Chan
-	time1Result := <-time1Chan
-	part2Result := <-answer2Chan
-	time2Result := <-time2Chan
-
-	return part1Result, time1Result, part2Result, time2Result
+	return strconv.Itoa(part1Result), time1Result, strconv.Itoa(part2Result), time2Result
 }
 
 func part1(grid [][]string) int {
@@ -96,14 +62,14 @@ func part1(grid [][]string) int {
 }
 
 func part2(grid [][]string) int {
-	xCoordinates, yCoordinates := getRelevantCoordinates(deepCopyGrid(grid))
+	xCoordinates, yCoordinates := getRelevantCoordinates(sliceutil.DeepCopyGrid(grid))
 
 	var wg sync.WaitGroup
 	resultChan := make(chan int, len(grid)*len(grid[0]))
 
 	for i := 0; i < len(xCoordinates); i++ {
 		wg.Add(1)
-		deepCopiedGrid := deepCopyGrid(grid)
+		deepCopiedGrid := sliceutil.DeepCopyGrid(grid)
 		deepCopiedGrid[yCoordinates[i]][xCoordinates[i]] = "#"
 
 		go func() {
@@ -167,7 +133,7 @@ func solvePart2(grid [][]string) int {
 		currentCoordinate := strconv.Itoa(currentX) + "," + strconv.Itoa(currentY)
 
 		if _, ok := visitedCoordinates[currentCoordinate]; ok {
-			if contains(visitedCoordinates[currentCoordinate], direction) {
+			if sliceutil.Contains(visitedCoordinates[currentCoordinate], direction) {
 				return 1
 			}
 		} else {
@@ -247,24 +213,5 @@ func isOffGrid(currentX, currentY int, grid [][]string) bool {
 	if currentX < 0 || currentY < 0 || currentX > len(grid[0])-1 || currentY > len(grid)-1 {
 		return true
 	}
-	return false
-}
-
-func deepCopyGrid(grid [][]string) [][]string {
-	copiedGrid := make([][]string, len(grid))
-	for i := range grid {
-		copiedGrid[i] = make([]string, len(grid[i]))
-		copy(copiedGrid[i], grid[i])
-	}
-	return copiedGrid
-}
-
-func contains(slice []string, int string) bool {
-	for _, value := range slice {
-		if value == int {
-			return true
-		}
-	}
-
 	return false
 }
