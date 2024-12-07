@@ -1,11 +1,11 @@
-package template
+package day22
 
 import (
 	"strconv"
 	"time"
 )
 
-func Run(input string) (string, int64, string, int64) {
+func Solve(input string) (string, int64, string, int64) {
 	answer1Chan := make(chan int)
 	answer2Chan := make(chan int)
 	time1Chan := make(chan int64)

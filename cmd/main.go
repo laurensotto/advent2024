@@ -14,6 +14,24 @@ import (
 	"github.com/laurensotto/advent2024/internal/day05"
 	"github.com/laurensotto/advent2024/internal/day06"
 	"github.com/laurensotto/advent2024/internal/day07"
+	"github.com/laurensotto/advent2024/internal/day08"
+	"github.com/laurensotto/advent2024/internal/day09"
+	"github.com/laurensotto/advent2024/internal/day10"
+	"github.com/laurensotto/advent2024/internal/day11"
+	"github.com/laurensotto/advent2024/internal/day12"
+	"github.com/laurensotto/advent2024/internal/day13"
+	"github.com/laurensotto/advent2024/internal/day14"
+	"github.com/laurensotto/advent2024/internal/day15"
+	"github.com/laurensotto/advent2024/internal/day16"
+	"github.com/laurensotto/advent2024/internal/day17"
+	"github.com/laurensotto/advent2024/internal/day18"
+	"github.com/laurensotto/advent2024/internal/day19"
+	"github.com/laurensotto/advent2024/internal/day20"
+	"github.com/laurensotto/advent2024/internal/day21"
+	"github.com/laurensotto/advent2024/internal/day22"
+	"github.com/laurensotto/advent2024/internal/day23"
+	"github.com/laurensotto/advent2024/internal/day24"
+	"github.com/laurensotto/advent2024/internal/day25"
 )
 
 const DayCount = 7
@@ -62,6 +80,42 @@ func runDay(day int, runExample bool) {
 		part1, executionTime1, part2, executionTime2 = day06.Solve(dataString)
 	case 7:
 		part1, executionTime1, part2, executionTime2 = day07.Solve(dataString)
+	case 8:
+		part1, executionTime1, part2, executionTime2 = day08.Solve(dataString)
+	case 9:
+		part1, executionTime1, part2, executionTime2 = day09.Solve(dataString)
+	case 10:
+		part1, executionTime1, part2, executionTime2 = day10.Solve(dataString)
+	case 11:
+		part1, executionTime1, part2, executionTime2 = day11.Solve(dataString)
+	case 12:
+		part1, executionTime1, part2, executionTime2 = day12.Solve(dataString)
+	case 13:
+		part1, executionTime1, part2, executionTime2 = day13.Solve(dataString)
+	case 14:
+		part1, executionTime1, part2, executionTime2 = day14.Solve(dataString)
+	case 15:
+		part1, executionTime1, part2, executionTime2 = day15.Solve(dataString)
+	case 16:
+		part1, executionTime1, part2, executionTime2 = day16.Solve(dataString)
+	case 17:
+		part1, executionTime1, part2, executionTime2 = day17.Solve(dataString)
+	case 18:
+		part1, executionTime1, part2, executionTime2 = day18.Solve(dataString)
+	case 19:
+		part1, executionTime1, part2, executionTime2 = day19.Solve(dataString)
+	case 20:
+		part1, executionTime1, part2, executionTime2 = day20.Solve(dataString)
+	case 21:
+		part1, executionTime1, part2, executionTime2 = day21.Solve(dataString)
+	case 22:
+		part1, executionTime1, part2, executionTime2 = day22.Solve(dataString)
+	case 23:
+		part1, executionTime1, part2, executionTime2 = day23.Solve(dataString)
+	case 24:
+		part1, executionTime1, part2, executionTime2 = day24.Solve(dataString)
+	case 25:
+		part1, executionTime1, part2, executionTime2 = day25.Solve(dataString)
 	}
 
 	fmt.Printf("Part 1: %s (%d ms)\n", part1, executionTime1)
