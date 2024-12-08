@@ -1,6 +1,11 @@
 package sliceutil
 
-import "errors"
+import (
+	"errors"
+	"log"
+	"strconv"
+	"strings"
+)
 
 func Contains[T int | string](slice []T, valueToFind T) bool {
 	for _, value := range slice {
@@ -25,17 +30,26 @@ func InsertBetween[T any](array []T, index1 int, index2 int, value T) ([]T, erro
 	return newArray, nil
 }
 
-func DeepCopyGrid[T any](grid [][]T) [][]T {
-	copiedGrid := make([][]T, len(grid))
-	for i := range grid {
-		copiedGrid[i] = DeepCopySlice(grid[i])
-	}
-	return copiedGrid
-}
-
 func DeepCopySlice[T any](slice []T) []T {
 	copiedSlice := make([]T, len(slice))
 	copy(copiedSlice, slice)
 
 	return copiedSlice
+}
+
+func CreateIntSliceFromString(string string, separator string) []int {
+	separatedString := strings.Split(string, separator)
+	intSlice := make([]int, len(separatedString))
+
+	for i, str := range separatedString {
+		intValue, err := strconv.Atoi(str)
+
+		if err != nil {
+			log.Fatalf("can not convert string %s to int", str)
+		}
+
+		intSlice[i] = intValue
+	}
+
+	return intSlice
 }

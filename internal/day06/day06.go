@@ -1,25 +1,21 @@
 package day06
 
 import (
-	"github.com/laurensotto/advent2024/pkg/sliceutil"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/laurensotto/advent2024/pkg/gridutil"
+	"github.com/laurensotto/advent2024/pkg/sliceutil"
 )
 
 func Solve(input string) (string, int64, string, int64) {
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
-	grid := make([][]string, len(lines))
+	grid := gridutil.CreateGrid(lines, "")
 
-	for i := range lines {
-		gridRow := strings.Split(lines[i], "")
-
-		grid[i] = gridRow
-	}
-
-	copiedGrid := sliceutil.DeepCopyGrid(grid)
+	copiedGrid := gridutil.DeepCopyGrid(grid)
 
 	startTime1 := time.Now()
 	part1Result := part1(grid)
@@ -62,14 +58,14 @@ func part1(grid [][]string) int {
 }
 
 func part2(grid [][]string) int {
-	xCoordinates, yCoordinates := getRelevantCoordinates(sliceutil.DeepCopyGrid(grid))
+	xCoordinates, yCoordinates := getRelevantCoordinates(gridutil.DeepCopyGrid(grid))
 
 	var wg sync.WaitGroup
 	resultChan := make(chan int, len(grid)*len(grid[0]))
 
 	for i := 0; i < len(xCoordinates); i++ {
 		wg.Add(1)
-		deepCopiedGrid := sliceutil.DeepCopyGrid(grid)
+		deepCopiedGrid := gridutil.DeepCopyGrid(grid)
 		deepCopiedGrid[yCoordinates[i]][xCoordinates[i]] = "#"
 
 		go func() {

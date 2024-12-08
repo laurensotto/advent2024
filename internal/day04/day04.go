@@ -5,18 +5,14 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/laurensotto/advent2024/pkg/gridutil"
 )
 
 func Solve(input string) (string, int64, string, int64) {
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
-	grid := make([][]string, len(lines))
-
-	for i := range lines {
-		gridRow := strings.Split(lines[i], "")
-
-		grid[i] = gridRow
-	}
+	grid := gridutil.CreateGrid(lines, "")
 
 	startTime1 := time.Now()
 	part1Result := part1(grid)
