@@ -35,3 +35,10 @@ func DeepCopyGrid[T any](grid [][]T) [][]T {
 	}
 	return copiedGrid
 }
+
+func IsOffGrid(currentX, currentY int, grid [][]string) bool {
+	if currentX < 0 || currentY < 0 || currentX > len(grid[0])-1 || currentY > len(grid)-1 {
+		return true
+	}
+	return false
+}

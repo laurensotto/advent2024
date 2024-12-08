@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func Solve(input string) (string, int64, string, int64) {
+func Solve(input string, verbose bool) (string, int64, string, int64) {
 	rows := strings.Split(input, "\n")
 
 	answersSlice := make([]int, len(rows))

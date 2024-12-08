@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Solve(input string) (string, int64, string, int64) {
+func Solve(input string, verbose bool) (string, int64, string, int64) {
 	startTime1 := time.Now()
 	part1Result := part1(input)
 	time1Result := time.Since(startTime1).Milliseconds()

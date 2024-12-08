@@ -10,7 +10,7 @@ import (
 	"github.com/laurensotto/advent2024/pkg/sliceutil"
 )
 
-func Solve(input string) (string, int64, string, int64) {
+func Solve(input string, verbose bool) (string, int64, string, int64) {
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
 	grid := gridutil.CreateGrid(lines, "")
@@ -43,7 +43,7 @@ func part1(grid [][]string) int {
 
 		currentX, currentY = getNextPosition(currentX, currentY, direction)
 
-		if isOffGrid(currentX, currentY, grid) {
+		if gridutil.IsOffGrid(currentX, currentY, grid) {
 			guardOnGrid = false
 			continue
 		}
@@ -104,7 +104,7 @@ func getRelevantCoordinates(grid [][]string) ([]int, []int) {
 
 		currentX, currentY = getNextPosition(currentX, currentY, direction)
 
-		if isOffGrid(currentX, currentY, grid) {
+		if gridutil.IsOffGrid(currentX, currentY, grid) {
 			guardOnGrid = false
 			continue
 		}
@@ -140,7 +140,7 @@ func solvePart2(grid [][]string) int {
 
 		currentX, currentY = getNextPosition(currentX, currentY, direction)
 
-		if isOffGrid(currentX, currentY, grid) {
+		if gridutil.IsOffGrid(currentX, currentY, grid) {
 			guardOnGrid = false
 			continue
 		}
@@ -203,11 +203,4 @@ func rotate(direction string) string {
 	default:
 		return "down"
 	}
-}
-
-func isOffGrid(currentX, currentY int, grid [][]string) bool {
-	if currentX < 0 || currentY < 0 || currentX > len(grid[0])-1 || currentY > len(grid)-1 {
-		return true
-	}
-	return false
 }

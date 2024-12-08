@@ -10,7 +10,7 @@ import (
 	"github.com/laurensotto/advent2024/pkg/sliceutil"
 )
 
-func Solve(input string) (string, int64, string, int64) {
+func Solve(input string, verbose bool) (string, int64, string, int64) {
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
 	listOne := make([]int, len(lines))
