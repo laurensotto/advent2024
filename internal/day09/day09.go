@@ -61,88 +61,23 @@ func part1(diskSlice []string, verbose bool) int {
 }
 
 func part2(diskSlice []string, verbose bool) int {
-	var emptyDiskSpace []DiskSpace
+	backwardPivot := len(diskSlice) - 1
 
-	for i := 0; i < len(diskSlice); i++ {
-		if diskSlice[i] == "." {
-			startEmptySpace := i
-
-			for j := i + 1; j < len(diskSlice); j++ {
-				if diskSlice[j] != "." {
-					endEmptySpace := j
-
-					emptyDiskSpace = append(emptyDiskSpace, DiskSpace{
-						startEmptySpace,
-						endEmptySpace - startEmptySpace,
-					})
-
-					i = j - 1 // Make sure to double-check this afterwards.
-					break
-				}
-			}
+	endDiskObject := -1
+	var currentCharacter string
+	for backwardPivot >= 0 {
+		if diskSlice[backwardPivot] != "." && endDiskObject == -1 {
+			currentCharacter = diskSlice[backwardPivot]
+			endDiskObject = backwardPivot
 		}
-	}
 
-	var filledDiskSpace []DiskSpace
+		if (backwardPivot == 0 || diskSlice[backwardPivot-1] != currentCharacter) && endDiskObject != -1 {
+			diskSlice = moveToAvailableSpace(diskSlice, backwardPivot, endDiskObject, verbose)
 
-	for i := 0; i < len(diskSlice); i++ {
-		foundCharacter := diskSlice[i]
-		if foundCharacter != "." {
-			startEmptySpace := i
-
-			for j := i + 1; j <= len(diskSlice); j++ {
-				if j == len(diskSlice) || diskSlice[j] != foundCharacter {
-					endEmptySpace := j
-
-					filledDiskSpace = append(filledDiskSpace, DiskSpace{
-						startEmptySpace,
-						endEmptySpace - startEmptySpace,
-					})
-
-					i = j - 1 // Make sure to double-check this afterwards.
-					break
-				}
-			}
+			endDiskObject = -1
 		}
-	}
 
-	for filledIndex := len(filledDiskSpace) - 1; filledIndex >= 0; filledIndex-- {
-		requiredLength := filledDiskSpace[filledIndex].blocks
-		startIndex := filledDiskSpace[filledIndex].startIndex
-		endIndex := startIndex + requiredLength - 1
-		character := diskSlice[startIndex]
-
-		fmt.Println(character)
-
-		for i, value := range emptyDiskSpace {
-			availableLength := value.blocks
-			emptyStartIndex := value.startIndex
-
-			if availableLength >= requiredLength {
-
-				endRequiredIndex := emptyStartIndex + requiredLength
-				for emptyStartIndex < endRequiredIndex {
-					diskSlice[emptyStartIndex] = character
-					emptyStartIndex++
-				}
-
-				for startIndex <= endIndex {
-					diskSlice[startIndex] = "."
-					startIndex++
-				}
-
-				emptyDiskSpace[i] = DiskSpace{
-					endRequiredIndex,
-					value.blocks + value.startIndex - endRequiredIndex,
-				}
-
-				break
-			}
-		}
-	}
-
-	if verbose {
-		fmt.Println(diskSlice)
+		backwardPivot--
 	}
 
 	return calculateChecksum(diskSlice)
@@ -171,6 +106,41 @@ func createDiskSlice(diskSlice []string, splitString []string) []string {
 		}
 
 		pivot += intValue
+	}
+
+	return diskSlice
+}
+
+func moveToAvailableSpace(diskSlice []string, startIndex int, endIndex int, verbose bool) []string {
+	requiredLength := endIndex - startIndex + 1
+
+	startEmptyIndex := -1
+	for i, value := range diskSlice {
+		if i >= startIndex {
+			break
+		}
+
+		if value == "." && startEmptyIndex == -1 {
+			startEmptyIndex = i
+		}
+
+		if (i == len(diskSlice)-1 || diskSlice[i+1] != ".") && startEmptyIndex != -1 {
+
+			if i-startEmptyIndex+1 < requiredLength {
+				startEmptyIndex = -1
+				continue
+			}
+
+			for j := startEmptyIndex; j < startEmptyIndex+requiredLength; j++ {
+				diskSlice[j] = diskSlice[startIndex]
+			}
+
+			for j := startIndex; j <= endIndex; j++ {
+				diskSlice[j] = "."
+			}
+
+			break
+		}
 	}
 
 	return diskSlice
