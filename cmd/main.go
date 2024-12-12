@@ -34,7 +34,7 @@ import (
 	"github.com/laurensotto/advent2024/internal/day25"
 )
 
-const DayCount = 10
+const DayCount = 11
 
 func main() {
 	var day int
